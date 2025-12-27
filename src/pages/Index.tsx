@@ -1,7 +1,43 @@
 import { Download, Server, Monitor, Zap, ArrowRight, Terminal, Network } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 const Index = () => {
+  const [platform, setPlatform] = useState<"mac" | "windows" | "linux">("windows");
+  
+  // Version and filename variables - Update these to change all download links
+  const version = "1.0.0";
+  const fileNameMac = `mac.zip`;
+  const fileNameWin = `TCP Server Client-${version}.exe`;
+  const fileNameLinux = `TCP Server Client-${version}-x64.tar.gz`;
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes("mac")) {
+      setPlatform("mac");
+    } else if (userAgent.includes("linux")) {
+      setPlatform("linux");
+    } else {
+      setPlatform("windows");
+    }
+  }, []);
+
+  const downloadFileName =
+    platform === "mac"
+      ? fileNameMac
+      : platform === "linux"
+      ? fileNameLinux
+      : fileNameWin;
+
+  const downloadUrl =
+    platform === "mac"
+      ? `/download/v${version}/mac/${fileNameMac}`
+      : platform === "linux"
+      ? `/download/v${version}/linux/${fileNameLinux}`
+      : `/download/v${version}/win/${fileNameWin}`;
+
+  const platformText = platform === "mac" ? "macOS" : platform === "linux" ? "Linux" : "Windows";
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-hidden">
       {/* Background gradient effects */}
@@ -20,7 +56,7 @@ const Index = () => {
             <span className="font-semibold text-lg">TCP Connect</span>
           </div>
           <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-            v1.0.0
+            v{version}
           </Button>
         </div>
       </header>
@@ -30,7 +66,7 @@ const Index = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border mb-8">
             <Terminal className="w-4 h-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Desktop Application for Windows</span>
+            <span className="text-sm text-muted-foreground">Desktop Application for {platformText}</span>
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -49,14 +85,16 @@ const Index = () => {
               className="group animate-pulse-glow"
               asChild
             >
-              <a href="#download" className="flex items-center gap-2">
+              <a href={downloadUrl} className="flex items-center gap-2">
                 <Download className="w-5 h-5" />
                 Download Now
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
             </Button>
             <Button variant="outline" size="lg" className="border-border hover:bg-secondary">
-              View Documentation
+              <a href="https://github.com/RajHirani/tcp-server-client/blob/master/README.md" className="flex items-center gap-2">
+                View Documentation
+              </a>
             </Button>
           </div>
         </div>
@@ -100,7 +138,7 @@ const Index = () => {
                 Download TCP Connect
               </h2>
               <p className="text-muted-foreground mb-8">
-                Get the latest version for Windows. Free and open source.
+                Get the latest version for {platformText}. Free and open source.
               </p>
 
               <Button 
@@ -109,17 +147,17 @@ const Index = () => {
                 asChild
               >
                 <a 
-                  href="https://your-download-link.com/tcp-connect-v1.0.0.zip" 
-                  download
+                  href={downloadUrl}
+                  download={downloadFileName}
                   className="flex items-center justify-center gap-2"
                 >
                   <Download className="w-5 h-5" />
-                  Download v1.0.0 (Windows)
+                  Download v{version} ({platformText})
                 </a>
               </Button>
 
               <p className="text-sm text-muted-foreground mt-4">
-                Version 1.0.0 • Windows 10/11
+                Version {version} • {platformText}
               </p>
             </div>
           </div>

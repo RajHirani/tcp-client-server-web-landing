@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "tcp-client-server-web"
+  }
+}
