@@ -8,8 +8,8 @@ const Index = () => {
   // Version and filename variables - Update these to change all download links
   const version = "1.0.0";
   const fileNameMac = `mac.zip`;
-  const fileNameWin = `TCP Server Client-${version}.exe`;
-  const fileNameLinux = `TCP Server Client-${version}-x64.tar.gz`;
+  const fileNameWin = `win.zip`;
+  const fileNameLinux = `lin.tar.gz`;
 
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
